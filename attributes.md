@@ -149,3 +149,25 @@ Absolutely! Let’s go **column by column** so you fully understand what each at
 If you want, I can also **draw a visual diagram showing how each of these attributes flows into Stage allocation → PD → LGD → ECL**, which is **perfect for showing bankers and auditors**.
 
 Do you want me to do that?
+
+How it works?
+
+Loan Data (SQL)
+      │
+      ▼
+SICR Stage Allocation
+      │
+      ▼
+PD Calculation → Lifetime PD
+      │
+      ▼
+LGD Calculation → Cashflow Discounting
+      │
+      ▼
+ECL Calculation → Stage 1/2/3
+      │
+      ▼
+Scenario Weighting → Weighted ECL
+      │
+      ▼
+SQL Output → Finance GL / Reports
