@@ -1,0 +1,6 @@
+pandas
+numpy
+pyyaml
+sqlalchemy
+python-docx
+apache-airflow
