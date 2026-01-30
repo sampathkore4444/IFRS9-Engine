@@ -1,0 +1,4 @@
+days_past_due_stage2: 30
+days_past_due_stage3: 90
+pd_deterioration_factor: 2.0
+rating_downgrade_notches: 3.0

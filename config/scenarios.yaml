@@ -1,0 +1,13 @@
+scenarios:
+  base:
+    weight: 0.5
+    pd_multiplier: 1.0
+    lgd_multiplier: 1.0
+  downside:
+    weight: 0.3
+    pd_multiplier: 1.5
+    lgd_multiplier: 1.2
+  uupside:
+    weight: 0.2
+    pd_multiplier: 0.8
+    lgd_multiplier: 0.9
