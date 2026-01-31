@@ -10,7 +10,8 @@ from models.lgd_cashflow import lgd_cashflow
 from models.ead_amortization import build_ead_schedule
 from models.ead_ccf import calculate_ead_ccf
 
-from engine.ecl_monthly import monthly_ecl
+from engine.ecl_monthly import monthly_ecl_without_ead_model
+from engine.ecl_monthly import monthly_ecl_with_ead_model
 
 # --- Streamlit UI ---
 st.title("IFRS 9 ECL Engine")
@@ -95,10 +96,17 @@ if uploaded_file:
                 * s["lgd_multiplier"]
             )
 
-            ecl = monthly_ecl(
+            # ecl = monthly_ecl_without_ead_model(
+            #     pd_term_structure=pd_ts,
+            #     lgd=lgd,
+            #     ead=row["ead"],  # without modelling ead
+            #     eir=row["eir"],
+            #     stage=stage,
+            # )
+
+            ecl = monthly_ecl_with_ead_model(
                 pd_term_structure=pd_ts,
                 lgd=lgd,
-                # ead=row["ead"], without modelling ead
                 ead_term_structure=ead_ts,  # With modelling ead
                 eir=row["eir"],
                 stage=stage,

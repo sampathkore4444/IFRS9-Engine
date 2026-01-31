@@ -15,22 +15,22 @@
 
 
 # this is without ead modelling
-# def monthly_ecl(pd_term_structure, lgd, ead, eir, stage):
-#     horizon = 12 if stage == 1 else pd_term_structure["month"].max()
-#     ecl = 0.0
+def monthly_ecl_without_ead_model(pd_term_structure, lgd, ead, eir, stage):
+    horizon = 12 if stage == 1 else pd_term_structure["month"].max()
+    ecl = 0.0
 
-#     for _, row in pd_term_structure.iterrows():
-#         if row["month"] > horizon:
-#             break
+    for _, row in pd_term_structure.iterrows():
+        if row["month"] > horizon:
+            break
 
-#         df = 1 / ((1 + eir) ** (row["month"] / 12))
-#         ecl += row["monthly_pd"] * lgd * ead * df
+        df = 1 / ((1 + eir) ** (row["month"] / 12))
+        ecl += row["monthly_pd"] * lgd * ead * df
 
-#     return ecl
+    return ecl
 
 
 # this is with ead_term_structure model
-def monthly_ecl(pd_term_structure, lgd, ead_term_structure, eir, stage):
+def monthly_ecl_with_ead_model(pd_term_structure, lgd, ead_term_structure, eir, stage):
     ecl = 0.0
 
     # Convert pandas → list (CRITICAL FIX)
