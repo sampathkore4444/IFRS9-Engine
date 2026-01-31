@@ -14,6 +14,7 @@
 #     return ecl
 
 
+# this is without ead modelling
 # def monthly_ecl(pd_term_structure, lgd, ead, eir, stage):
 #     horizon = 12 if stage == 1 else pd_term_structure["month"].max()
 #     ecl = 0.0
@@ -28,6 +29,7 @@
 #     return ecl
 
 
+# this is with ead_term_structure model
 def monthly_ecl(pd_term_structure, lgd, ead_term_structure, eir, stage):
     ecl = 0.0
 

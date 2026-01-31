@@ -40,7 +40,7 @@ for _, row in loans.iterrows():
     stage, sicr_reason = assign_stage(row, sicr_cfg)
 
     # -----------------------------
-    # EAD LOGIC (ADD HERE)
+    # EAD LOGIC (ADD HERE) to model ead
     # -----------------------------
     product = row["product_type"]
 
@@ -82,8 +82,8 @@ for _, row in loans.iterrows():
         ecl = monthly_ecl(
             pd_term_structure=pd_ts,
             lgd=lgd,
-            # ead=row["ead"],
-            ead_term_structure=ead_ts,
+            # ead=row["ead"], without modelling ead
+            ead_term_structure=ead_ts,  # With modelling ead
             eir=row["eir"],
             stage=stage,
         )
