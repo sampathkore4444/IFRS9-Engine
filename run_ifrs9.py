@@ -3,7 +3,12 @@ from data.loader import load_loan_snapshot
 from staging.sicr import assign_stage
 from models.lifetime_pd import build_pd_term_structure
 from models.lgd_cashflow import lgd_cashflow
+
+from models.ead_amortization import build_ead_schedule
+from models.ead_ccf import calculate_ead_ccf
+
 from engine.ecl_monthly import monthly_ecl
+
 import ast
 
 
@@ -13,6 +18,9 @@ with open("config/sicr.yaml") as f:
 
 with open("config/scenarios.yaml") as f:
     scenarios = yaml.safe_load(f)["scenarios"]
+
+with open("config/ccf.yaml") as f:
+    ccf_cfg = yaml.safe_load(f)
 
 # Load data
 loans = load_loan_snapshot("loan_snapshot.csv")
@@ -31,6 +39,34 @@ results = []
 for _, row in loans.iterrows():
     stage, sicr_reason = assign_stage(row, sicr_cfg)
 
+    # -----------------------------
+    # EAD LOGIC (ADD HERE)
+    # -----------------------------
+    product = row["product_type"]
+
+    if product in ["term_loan", "mortgage"]:
+        # Contractual amortization
+        ead_ts = build_ead_schedule(
+            ead=row["ead"], eir=row["eir"], remaining_months=row["remaining_months"]
+        )
+
+    elif product in ["credit_card", "overdraft"]:
+        # CCF-based EAD
+        ead_ccf = calculate_ead_ccf(
+            outstanding=row["ead"],
+            limit=row["credit_limit"],
+            ccf=ccf_cfg[product]["ccf"],
+        )
+        ead_ts = [ead_ccf] * row["remaining_months"]
+
+    else:
+        # Fallback (safe default)
+        ead_ts = [row["ead"]] * row["remaining_months"]
+
+    # -----------------------------
+    # Continue as before
+    # -----------------------------
+
     ecl_total = 0.0
 
     for s in scenarios.values():
@@ -46,7 +82,8 @@ for _, row in loans.iterrows():
         ecl = monthly_ecl(
             pd_term_structure=pd_ts,
             lgd=lgd,
-            ead=row["ead"],
+            # ead=row["ead"],
+            ead_term_structure=ead_ts,
             eir=row["eir"],
             stage=stage,
         )

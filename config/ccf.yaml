@@ -1,0 +1,8 @@
+credit_card:
+  ccf: 0.75
+
+overdraft:
+  ccf: 0.90
+
+corporate_revolver:
+  ccf: 0.60
